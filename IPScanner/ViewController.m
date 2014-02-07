@@ -12,13 +12,26 @@
 
 @end
 
-@implementation ViewController
-@synthesize myTableView;
+@implementation ViewController{
+    NSString *str;
+}
+@synthesize myTableView, btnScan;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	arrBarcode = [[NSMutableArray alloc]init];
+    
+    // Set background image
+    UIImageView *img = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"color_bg.png"]];
+    [self.view addSubview:img];
+    [self.view sendSubviewToBack:img];
+
+    // Display btnScan
+    UIImage * imgScan = [UIImage imageNamed:@"button_active.png"];
+    [btnScan setBackgroundImage:imgScan forState:UIControlStateNormal];
+    [btnScan setTitle:@"Scan" forState:UIControlStateNormal];
+
 }
 
 // UITableView Delegate Methods
@@ -50,6 +63,32 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+- (IBAction)btnScan:(id)sender {
+    ZBarReaderViewController *reader = [ZBarReaderViewController new];
+    reader.readerDelegate = self;
+    reader.supportedOrientationsMask = ZBarOrientationMaskAll;
+    ZBarImageScanner *scanner = reader.scanner;
+    [scanner    setSymbology:ZBAR_I25 config:ZBAR_CFG_ENABLE to:0];
+    [self presentViewController:reader animated:YES completion:nil];
+}
+
+
+- (void) imagePickerController:(UIImagePickerController *)reeader didFinishPickingMediaWithInfo:(NSDictionary *)info{
+    id<NSFastEnumeration> results = [info objectForKey:ZBarReaderControllerResults];
+    ZBarSymbol *symbol = nil;
+    for (symbol in results)
+        break;
+    //txtScannedBarcode.text = symbol.data;
+    //str = txtScannedBarcode.text;
+    str = symbol.data;
+    if (symbol.data != nil){
+        [arrBarcode addObject:str];
+    }
+    //resultImage.image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    [self.myTableView reloadData];
+    [reeader dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
