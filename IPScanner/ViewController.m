@@ -14,8 +14,9 @@
 
 @implementation ViewController{
     NSString *str;
+    int rowNumber;
 }
-@synthesize myTableView, btnScan;
+@synthesize myTableView, btnScan, btnScanComputer;
 
 - (void)viewDidLoad
 {
@@ -31,6 +32,11 @@
     UIImage * imgScan = [UIImage imageNamed:@"button_active.png"];
     [btnScan setBackgroundImage:imgScan forState:UIControlStateNormal];
     [btnScan setTitle:@"Scan" forState:UIControlStateNormal];
+    
+    // Display Scan Computer Button
+    UIImage *imgScanComputer = [UIImage imageNamed:@"button_active.png"];
+    [btnScanComputer setBackgroundImage:imgScanComputer forState:UIControlStateNormal];
+    [btnScanComputer setTitle:@"Scan Computer" forState:UIControlStateNormal];
 
 }
 
@@ -60,6 +66,43 @@
     //[cell addSubview:btn];
     return cell;
 }
+
+// Set the identation for rows in UITableView
+-(NSInteger) tableView:(UITableView *)tableView indentationLevelForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 5;
+}
+
+// Set the scroll in UITableView
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    CGPoint offset = scrollView.contentOffset;
+    CGRect bounds = scrollView.bounds;
+    CGSize size = scrollView.contentSize;
+    UIEdgeInsets inset = scrollView.contentInset;
+    float y = offset.y + bounds.size.height - inset.bottom;
+    float h = size.height;
+    float reload_distance = 10;
+    if (y > h + reload_distance)
+    {
+        [self.myTableView reloadData];
+    }
+}
+
+// Set the cell click
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    rowNumber = indexPath.row;
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    str = cell.textLabel.text;
+}
+
+// Delete the data in each cell in UITableView
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        [arrBarcode removeObjectAtIndex:indexPath.row];
+        [self.myTableView reloadData];
+    }
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -74,6 +117,14 @@
     [self presentViewController:reader animated:YES completion:nil];
 }
 
+- (IBAction)btnScanComputer:(id)sender {
+    ZBarReaderController *reeader = [ZBarReaderController new];
+    reeader.readerDelegate = self;
+    if ([ZBarReaderController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+        reeader.sourceType = UIImagePickerControllerSourceTypeCamera;
+    [reeader.scanner setSymbology:ZBAR_I25 config:ZBAR_CFG_ENABLE to:0];
+    [self presentViewController:reeader animated:YES completion:nil];
+}
 
 - (void) imagePickerController:(UIImagePickerController *)reeader didFinishPickingMediaWithInfo:(NSDictionary *)info{
     id<NSFastEnumeration> results = [info objectForKey:ZBarReaderControllerResults];

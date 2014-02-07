@@ -13,7 +13,10 @@
     NSMutableArray *arrBarcode;
 }
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;
+@property (weak, nonatomic) IBOutlet UIButton *btnScanComputer;
 @property (weak, nonatomic) IBOutlet UIButton *btnScan;
 - (IBAction)btnScan:(id)sender;
+
+- (IBAction)btnScanComputer:(id)sender;
 
 @end

@@ -35,12 +35,23 @@
                                     <action selector="btnScan:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="0fr-RK-Hxn"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j2T-pa-uEG">
+                                <rect key="frame" x="20" y="364" width="280" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="btnScanComputer:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="9Na-ct-xba"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="x9N-qm-FKK"/>
                     <connections>
                         <outlet property="btnScan" destination="Wg7-NQ-uFq" id="4Tc-Vn-goP"/>
+                        <outlet property="btnScanComputer" destination="j2T-pa-uEG" id="P5H-oO-FBm"/>
                         <outlet property="myTableView" destination="aqx-e3-39X" id="Dx0-wq-lfq"/>
                     </connections>
                 </viewController>
