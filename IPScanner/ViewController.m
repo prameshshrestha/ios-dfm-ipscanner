@@ -16,7 +16,7 @@
     NSString *str;
     int rowNumber;
 }
-@synthesize myTableView, btnScan, btnScanComputer;
+@synthesize myTableView, btnScan, btnScanComputer, btnConnect, btnSend;
 
 - (void)viewDidLoad
 {
@@ -37,7 +37,19 @@
     UIImage *imgScanComputer = [UIImage imageNamed:@"button_active.png"];
     [btnScanComputer setBackgroundImage:imgScanComputer forState:UIControlStateNormal];
     [btnScanComputer setTitle:@"Scan Computer" forState:UIControlStateNormal];
-
+    
+    // Display Connect
+    UIImage *imgConnect = [UIImage imageNamed:@"button_active.png"];
+    [btnConnect setBackgroundImage:imgConnect forState:UIControlStateNormal];
+    [btnConnect setTitle:@"Connect to RST Scan" forState:UIControlStateNormal];
+    
+    // Display btnSend
+    UIImage *imgSend = [UIImage imageNamed:@"button_active.png"];
+    [btnSend setBackgroundImage:imgSend forState:UIControlStateNormal];
+    [btnSend setTitle:@"Send Data" forState:UIControlStateNormal];
+    
+    dispatch_queue_t mainQueue = dispatch_get_main_queue();
+    asyncSocket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:mainQueue];
 }
 
 // UITableView Delegate Methods
@@ -124,6 +136,55 @@
         reeader.sourceType = UIImagePickerControllerSourceTypeCamera;
     [reeader.scanner setSymbology:ZBAR_I25 config:ZBAR_CFG_ENABLE to:0];
     [self presentViewController:reeader animated:YES completion:nil];
+}
+
+- (IBAction)btnConnect:(id)sender {
+        // Code for connect goes here
+    /*
+        if ([serverIpTextField.text isEqualToString:@""])
+        {
+            UIAlertView *serverErrorMessage = [[UIAlertView alloc]initWithTitle:@"Server Error" message:@"Server IP cannot be empty" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            [serverErrorMessage show];
+        }
+        else if ([portNoTextField.text isEqualToString:@""])
+        {
+            UIAlertView *portErrorMessage = [[UIAlertView alloc]initWithTitle:@"Port No Empty" message:@"Port No cannot be mpty" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            [portErrorMessage show];
+        }
+        else
+        {*/
+            // Connect method goes here
+            NSError *error = nil;
+            if (![asyncSocket connectToHost:host onPort:port error:&error])
+            {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Not Connected" message:@"Could not connect to Server App, Try Again" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                [alertView show];
+                //UIImage *imgNotConnected = [UIImage imageNamed:@"button_selected.png"];
+                //[btnConnect setBackgroundImage:imgNotConnected forState:UIControlStateNormal];
+                [btnConnect setTitle:@"Not Connected" forState:UIControlStateNormal];
+            }
+            else
+            {
+                //UIImage *img = [UIImage imageNamed:@"button_active.png"];
+                //[btnConnect setBackgroundImage:img forState:UIControlStateNormal];
+                [btnConnect setTitle:@"Connected" forState:UIControlStateNormal];
+                [btnConnect setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                [btnConnect setEnabled:NO];
+                [btnSend setEnabled:YES];
+            }
+        
+    }
+
+- (IBAction)btnSend:(id)sender {
+    NSString *string = [[NSString alloc] initWithFormat:@"%@",str];
+    //NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
+    //[asyncSocket writeData:data withTimeout:-1 tag:0];
+    [asyncSocket writeData:[string dataUsingEncoding:NSUTF8StringEncoding] withTimeout:-1 tag:0];
+    //[asyncSocket readDataToData:[GCDAsyncSocket CRData] withTimeout:30.0 tag:0];
+    //[asyncSocket didWriteDataWithTag:(long)string];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Data Sent" message:@"Barcode has been successfully sent" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    [alertView show];
+
 }
 
 - (void) imagePickerController:(UIImagePickerController *)reeader didFinishPickingMediaWithInfo:(NSDictionary *)info{

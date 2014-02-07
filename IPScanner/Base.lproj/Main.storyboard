@@ -45,19 +45,128 @@
                                     <action selector="btnScanComputer:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="9Na-ct-xba"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tb5-xb-v2M">
+                                <rect key="frame" x="20" y="372" width="280" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="btnConnect:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="g22-sz-389"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YQ0-rM-c4l">
+                                <rect key="frame" x="20" y="430" width="280" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="btnSend:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="E2m-iz-zmS"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="x9N-qm-FKK"/>
+                    <navigationItem key="navigationItem" id="x9N-qm-FKK">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="tBV-sn-Tpr">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="o2e-Sw-fq2">
+                                <rect key="frame" x="233" y="5" width="71" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="FSa-OT-lHl" kind="push" id="b21-YS-ykU"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="btnConnect" destination="tb5-xb-v2M" id="rlQ-c6-0Q1"/>
                         <outlet property="btnScan" destination="Wg7-NQ-uFq" id="4Tc-Vn-goP"/>
                         <outlet property="btnScanComputer" destination="j2T-pa-uEG" id="P5H-oO-FBm"/>
+                        <outlet property="btnSend" destination="YQ0-rM-c4l" id="YFq-zS-Fwt"/>
                         <outlet property="myTableView" destination="aqx-e3-39X" id="Dx0-wq-lfq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="243" y="-24"/>
+        </scene>
+        <!--Settings View Controller-->
+        <scene sceneID="Ezo-lA-DpR">
+            <objects>
+                <viewController id="FSa-OT-lHl" customClass="SettingsViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="TBX-dd-fOm"/>
+                        <viewControllerLayoutGuide type="bottom" id="AOS-Mc-wbl"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="gfy-ac-xAR">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Client IP" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ynr-NU-vs5">
+                                <rect key="frame" x="27" y="81" width="273" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="FSa-OT-lHl" id="JFz-Ts-ULK"/>
+                                </connections>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gUJ-w2-A72">
+                                <rect key="frame" x="20" y="332" width="280" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="btnSave:" destination="FSa-OT-lHl" eventType="touchUpInside" id="hpu-YC-27p"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YBu-ZQ-8IR">
+                                <rect key="frame" x="20" y="267" width="280" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="btnUdid:" destination="FSa-OT-lHl" eventType="touchUpInside" id="SKG-yR-bTc"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Enable Wrist Scan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gIt-uc-pi6">
+                                <rect key="frame" x="27" y="143" width="181" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="md5-vy-mL2">
+                                <rect key="frame" x="27" y="198" width="273" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="FSa-OT-lHl" id="wea-ob-zWb"/>
+                                </connections>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Avk-rS-dIZ"/>
+                    <connections>
+                        <outlet property="btnSave" destination="gUJ-w2-A72" id="ZZa-b1-rX4"/>
+                        <outlet property="btnUdid" destination="YBu-ZQ-8IR" id="ghD-6M-B9c"/>
+                        <outlet property="lblWrist" destination="gIt-uc-pi6" id="4vI-BZ-2gQ"/>
+                        <outlet property="txtIP" destination="ynr-NU-vs5" id="mdO-4u-dEH"/>
+                        <outlet property="txtUniqueId" destination="md5-vy-mL2" id="6HH-o6-ake"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JSo-bS-oxX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="634" y="-24"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="mTX-ZL-Ibp">

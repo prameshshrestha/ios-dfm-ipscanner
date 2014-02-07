@@ -43,6 +43,7 @@
 		8E707F8F18A562EE007D668E /* zbar-helpicons.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E707F8A18A562EE007D668E /* zbar-helpicons.png */; };
 		8E707F9018A562EE007D668E /* zbar-samples.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E707F8B18A562EE007D668E /* zbar-samples.png */; };
 		8E707F9218A56610007D668E /* color_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E707F9118A56610007D668E /* color_bg.png */; };
+		8E707F9518A57594007D668E /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E707F9418A57594007D668E /* SettingsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -118,6 +119,8 @@
 		8E707F8A18A562EE007D668E /* zbar-helpicons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zbar-helpicons.png"; sourceTree = "<group>"; };
 		8E707F8B18A562EE007D668E /* zbar-samples.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zbar-samples.png"; sourceTree = "<group>"; };
 		8E707F9118A56610007D668E /* color_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = color_bg.png; sourceTree = "<group>"; };
+		8E707F9318A57594007D668E /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		8E707F9418A57594007D668E /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,6 +195,8 @@
 				8E707ECC18A5594A007D668E /* TCP */,
 				8E707E8318A54BEF007D668E /* AppDelegate.h */,
 				8E707E8418A54BEF007D668E /* AppDelegate.m */,
+				8E707F9318A57594007D668E /* SettingsViewController.h */,
+				8E707F9418A57594007D668E /* SettingsViewController.m */,
 				8E707E8618A54BEF007D668E /* Main.storyboard */,
 				8E707E8918A54BEF007D668E /* ViewController.h */,
 				8E707E8A18A54BEF007D668E /* ViewController.m */,
@@ -436,6 +441,7 @@
 			files = (
 				8E707ECF18A5594A007D668E /* GCDAsyncSocket.m in Sources */,
 				8E707E8B18A54BEF007D668E /* ViewController.m in Sources */,
+				8E707F9518A57594007D668E /* SettingsViewController.m in Sources */,
 				8E707E8518A54BEF007D668E /* AppDelegate.m in Sources */,
 				8E707E8118A54BEF007D668E /* main.m in Sources */,
 			);
