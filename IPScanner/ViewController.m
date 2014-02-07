@@ -16,12 +16,15 @@
     NSString *str;
     int rowNumber;
 }
-@synthesize myTableView, btnScan, btnScanComputer, btnConnect, btnSend;
+@synthesize myTableView, btnScan, btnScanComputer, btnConnect, btnSend, btnWrist;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	arrBarcode = [[NSMutableArray alloc]init];
+    
+    // Set Title Image
+    self.navigationItem.titleView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dfm_slogo.png"]];
     
     // Set background image
     UIImageView *img = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"color_bg.png"]];
@@ -48,8 +51,32 @@
     [btnSend setBackgroundImage:imgSend forState:UIControlStateNormal];
     [btnSend setTitle:@"Send Data" forState:UIControlStateNormal];
     
+    // Display btnWrist
+    UIImage *imgWrist = [UIImage imageNamed:@"button_active.png"];
+    [btnWrist setBackgroundImage:imgWrist forState:UIControlStateNormal];
+    [btnWrist setTitle:@"Wrist" forState:UIControlStateNormal];
+
+    
     dispatch_queue_t mainQueue = dispatch_get_main_queue();
     asyncSocket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:mainQueue];
+}
+
+- (void) viewDidAppear:(BOOL)animated
+{
+    //host = self.txtServiceUrl.text;
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *ip = [defaults objectForKey:@"ip"];
+    NSString *uniqueId = [defaults objectForKey:@"uniqueId"];
+    bool isWristEnabled = [defaults boolForKey:@"isWristEnabled"];
+    
+    if (!isWristEnabled){
+        [btnWrist setHidden:YES];
+    }
+    else{
+        [btnWrist setHidden:NO];
+    }
+    host = ip;
+    udid = uniqueId;
 }
 
 // UITableView Delegate Methods
@@ -185,6 +212,9 @@
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Data Sent" message:@"Barcode has been successfully sent" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
     [alertView show];
 
+}
+
+- (IBAction)btnWrist:(id)sender {
 }
 
 - (void) imagePickerController:(UIImagePickerController *)reeader didFinishPickingMediaWithInfo:(NSDictionary *)info{

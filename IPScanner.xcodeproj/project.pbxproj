@@ -44,6 +44,7 @@
 		8E707F9018A562EE007D668E /* zbar-samples.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E707F8B18A562EE007D668E /* zbar-samples.png */; };
 		8E707F9218A56610007D668E /* color_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E707F9118A56610007D668E /* color_bg.png */; };
 		8E707F9518A57594007D668E /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E707F9418A57594007D668E /* SettingsViewController.m */; };
+		8E707F9718A58355007D668E /* dfm_slogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E707F9618A58355007D668E /* dfm_slogo.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -121,6 +122,7 @@
 		8E707F9118A56610007D668E /* color_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = color_bg.png; sourceTree = "<group>"; };
 		8E707F9318A57594007D668E /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		8E707F9418A57594007D668E /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		8E707F9618A58355007D668E /* dfm_slogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dfm_slogo.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -248,6 +250,7 @@
 		8E707EF318A55EA7007D668E /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				8E707F9618A58355007D668E /* dfm_slogo.png */,
 				8E707F9118A56610007D668E /* color_bg.png */,
 				8E707EF818A55EA7007D668E /* button_active.png */,
 				8E707EF918A55EA7007D668E /* button_active@2x.png */,
@@ -410,6 +413,7 @@
 				8E707F0E18A55EA7007D668E /* button_active@2x.png in Resources */,
 				8E707F1D18A55EA7007D668E /* settingsicon@2x.png in Resources */,
 				8E707F8F18A562EE007D668E /* zbar-helpicons.png in Resources */,
+				8E707F9718A58355007D668E /* dfm_slogo.png in Resources */,
 				8E707F0F18A55EA7007D668E /* button_selected.png in Resources */,
 				8E707F9218A56610007D668E /* color_bg.png in Resources */,
 				8E707F9018A562EE007D668E /* zbar-samples.png in Resources */,

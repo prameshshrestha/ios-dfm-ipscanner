@@ -65,16 +65,26 @@
                                     <action selector="btnSend:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="E2m-iz-zmS"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qmu-X1-Cdc">
+                                <rect key="frame" x="20" y="483" width="280" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="btnWrist:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="CoC-Hq-6jS"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="x9N-qm-FKK">
                         <barButtonItem key="rightBarButtonItem" style="plain" id="tBV-sn-Tpr">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="o2e-Sw-fq2">
-                                <rect key="frame" x="233" y="5" width="71" height="33"/>
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="o2e-Sw-fq2">
+                                <rect key="frame" x="238" y="11" width="66" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <state key="normal" title="Button">
+                                <state key="normal" image="settingsicon.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -88,6 +98,7 @@
                         <outlet property="btnScan" destination="Wg7-NQ-uFq" id="4Tc-Vn-goP"/>
                         <outlet property="btnScanComputer" destination="j2T-pa-uEG" id="P5H-oO-FBm"/>
                         <outlet property="btnSend" destination="YQ0-rM-c4l" id="YFq-zS-Fwt"/>
+                        <outlet property="btnWrist" destination="Qmu-X1-Cdc" id="3H8-D0-eQe"/>
                         <outlet property="myTableView" destination="aqx-e3-39X" id="Dx0-wq-lfq"/>
                     </connections>
                 </viewController>
@@ -187,6 +198,9 @@
             <point key="canvasLocation" x="-283" y="-24"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="settingsicon.png" width="20" height="22"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

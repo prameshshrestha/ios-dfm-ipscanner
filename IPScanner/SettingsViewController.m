@@ -55,7 +55,6 @@
     if (isWristEnabled){
         [yourSwitch setOn:YES animated:YES];
         //[yourSwitch isOn];
-        NSLog(@"switch is on");
     }
 
 }
