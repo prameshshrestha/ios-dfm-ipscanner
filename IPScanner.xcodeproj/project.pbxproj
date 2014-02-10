@@ -45,6 +45,7 @@
 		8E707F9218A56610007D668E /* color_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E707F9118A56610007D668E /* color_bg.png */; };
 		8E707F9518A57594007D668E /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E707F9418A57594007D668E /* SettingsViewController.m */; };
 		8E707F9718A58355007D668E /* dfm_slogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E707F9618A58355007D668E /* dfm_slogo.png */; };
+		8E89B3F218A97C0800D4F037 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E89B3F118A97C0800D4F037 /* Reachability.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,6 +124,8 @@
 		8E707F9318A57594007D668E /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		8E707F9418A57594007D668E /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		8E707F9618A58355007D668E /* dfm_slogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dfm_slogo.png; sourceTree = "<group>"; };
+		8E89B3F018A97BFE00D4F037 /* Reachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		8E89B3F118A97C0800D4F037 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,6 +199,8 @@
 				8E707F6E18A562EE007D668E /* ZBarSDK */,
 				8E707ECC18A5594A007D668E /* TCP */,
 				8E707E8318A54BEF007D668E /* AppDelegate.h */,
+				8E89B3F018A97BFE00D4F037 /* Reachability.h */,
+				8E89B3F118A97C0800D4F037 /* Reachability.m */,
 				8E707E8418A54BEF007D668E /* AppDelegate.m */,
 				8E707F9318A57594007D668E /* SettingsViewController.h */,
 				8E707F9418A57594007D668E /* SettingsViewController.m */,
@@ -447,6 +452,7 @@
 				8E707E8B18A54BEF007D668E /* ViewController.m in Sources */,
 				8E707F9518A57594007D668E /* SettingsViewController.m in Sources */,
 				8E707E8518A54BEF007D668E /* AppDelegate.m in Sources */,
+				8E89B3F218A97C0800D4F037 /* Reachability.m in Sources */,
 				8E707E8118A54BEF007D668E /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

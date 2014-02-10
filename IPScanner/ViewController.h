@@ -13,7 +13,7 @@
     NSMutableArray *arrBarcode;
     GCDAsyncSocket *asyncSocket;
     NSString *host;
-    NSString *port;
+    //NSString *port;
     NSString *udid;
 }
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;

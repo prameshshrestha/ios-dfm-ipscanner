@@ -7,6 +7,9 @@
 //
 
 #import "ViewController.h"
+#include <ifaddrs.h>
+#include <arpa/inet.h>
+#import "Reachability.h"
 
 @interface ViewController ()
 
@@ -15,13 +18,32 @@
 @implementation ViewController{
     NSString *str;
     int rowNumber;
+    NSString *myString;
+    NSString *ipAddress;
 }
+uint16_t port = 5001;
+
 @synthesize myTableView, btnScan, btnScanComputer, btnConnect, btnSend, btnWrist;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // check for wifi or internet connection
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    [reachability startNotifier];
+    NetworkStatus status = [reachability currentReachabilityStatus];
+    if (status == ReachableViaWiFi){
+        NSLog(@"connected to WIFI");
+    }
+    else{
+        UIAlertView *wifiAlert = [[UIAlertView alloc] initWithTitle:@"Not Connected" message:@"Could not connect to Server App, Try Again" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [wifiAlert show];
+    }
+    
 	arrBarcode = [[NSMutableArray alloc]init];
+    
+    myString = @"prameshshrestha|1|10123564789";
     
     // Set Title Image
     self.navigationItem.titleView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dfm_slogo.png"]];
@@ -59,8 +81,42 @@
     
     dispatch_queue_t mainQueue = dispatch_get_main_queue();
     asyncSocket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:mainQueue];
+    
+    //get ip address of the device
+    ipAddress= [self getIPAddress];
+    NSLog(@"%@", ipAddress);
 }
 
+- (NSString *)getIPAddress {
+    
+    NSString *address = @"error";
+    struct ifaddrs *interfaces = NULL;
+    struct ifaddrs *temp_addr = NULL;
+    int success = 0;
+    // retrieve the current interfaces - returns 0 on success
+    success = getifaddrs(&interfaces);
+    if (success == 0) {
+        // Loop through linked list of interfaces
+        temp_addr = interfaces;
+        while(temp_addr != NULL) {
+            if(temp_addr->ifa_addr->sa_family == AF_INET) {
+                // Check if interface is en0 which is the wifi connection on the iPhone
+                if([[NSString stringWithUTF8String:temp_addr->ifa_name] isEqualToString:@"en0"]) {
+                    // Get NSString from C String
+                    address = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_addr)->sin_addr)];
+                    
+                }
+                
+            }
+            
+            temp_addr = temp_addr->ifa_next;
+        }
+    }
+    // Free memory
+    freeifaddrs(interfaces);
+    return address;
+    
+}
 - (void) viewDidAppear:(BOOL)animated
 {
     //host = self.txtServiceUrl.text;
@@ -142,11 +198,6 @@
     }
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-}
-
 - (IBAction)btnScan:(id)sender {
     ZBarReaderViewController *reader = [ZBarReaderViewController new];
     reader.readerDelegate = self;
@@ -165,58 +216,6 @@
     [self presentViewController:reeader animated:YES completion:nil];
 }
 
-- (IBAction)btnConnect:(id)sender {
-        // Code for connect goes here
-    /*
-        if ([serverIpTextField.text isEqualToString:@""])
-        {
-            UIAlertView *serverErrorMessage = [[UIAlertView alloc]initWithTitle:@"Server Error" message:@"Server IP cannot be empty" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-            [serverErrorMessage show];
-        }
-        else if ([portNoTextField.text isEqualToString:@""])
-        {
-            UIAlertView *portErrorMessage = [[UIAlertView alloc]initWithTitle:@"Port No Empty" message:@"Port No cannot be mpty" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-            [portErrorMessage show];
-        }
-        else
-        {*/
-            // Connect method goes here
-            NSError *error = nil;
-            if (![asyncSocket connectToHost:host onPort:port error:&error])
-            {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Not Connected" message:@"Could not connect to Server App, Try Again" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-                [alertView show];
-                //UIImage *imgNotConnected = [UIImage imageNamed:@"button_selected.png"];
-                //[btnConnect setBackgroundImage:imgNotConnected forState:UIControlStateNormal];
-                [btnConnect setTitle:@"Not Connected" forState:UIControlStateNormal];
-            }
-            else
-            {
-                //UIImage *img = [UIImage imageNamed:@"button_active.png"];
-                //[btnConnect setBackgroundImage:img forState:UIControlStateNormal];
-                [btnConnect setTitle:@"Connected" forState:UIControlStateNormal];
-                [btnConnect setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-                [btnConnect setEnabled:NO];
-                [btnSend setEnabled:YES];
-            }
-        
-    }
-
-- (IBAction)btnSend:(id)sender {
-    NSString *string = [[NSString alloc] initWithFormat:@"%@",str];
-    //NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
-    //[asyncSocket writeData:data withTimeout:-1 tag:0];
-    [asyncSocket writeData:[string dataUsingEncoding:NSUTF8StringEncoding] withTimeout:-1 tag:0];
-    //[asyncSocket readDataToData:[GCDAsyncSocket CRData] withTimeout:30.0 tag:0];
-    //[asyncSocket didWriteDataWithTag:(long)string];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Data Sent" message:@"Barcode has been successfully sent" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-    [alertView show];
-
-}
-
-- (IBAction)btnWrist:(id)sender {
-}
-
 - (void) imagePickerController:(UIImagePickerController *)reeader didFinishPickingMediaWithInfo:(NSDictionary *)info{
     id<NSFastEnumeration> results = [info objectForKey:ZBarReaderControllerResults];
     ZBarSymbol *symbol = nil;
@@ -231,6 +230,72 @@
     //resultImage.image = [info objectForKey:UIImagePickerControllerOriginalImage];
     [self.myTableView reloadData];
     [reeader dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)btnConnect:(id)sender {
+    // Connect method goes here
+    NSError *error = nil;
+    if (![asyncSocket connectToHost:host onPort:port error:&error])
+    {
+       UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Not Connected" message:@"Could not connect to Server App, Try Again" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+       [alertView show];
+        UIImage *imgNotConnected = [UIImage imageNamed:@"button_selected.png"];
+        [btnConnect setBackgroundImage:imgNotConnected forState:UIControlStateNormal];
+        [btnConnect setTitle:@"Not Connected" forState:UIControlStateNormal];
+    }
+}
+
+- (IBAction)btnSend:(id)sender {
+    NSString *string = [[NSString alloc] initWithFormat:@"%@",str];
+    //NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
+    //[asyncSocket writeData:data withTimeout:-1 tag:0];
+    [asyncSocket writeData:[myString dataUsingEncoding:NSUTF8StringEncoding] withTimeout:-1 tag:0];
+    //[asyncSocket readDataToData:[GCDAsyncSocket CRData] withTimeout:30.0 tag:0];
+    //[asyncSocket didWriteDataWithTag:(long)string];
+}
+
+//GCDAsync Delegate method
+-(void)socket:(GCDAsyncSocket*)sock didConnectToHost:(NSString *)host port:(uint16_t)port{
+    [btnConnect setTitle:@"Connected" forState:UIControlStateNormal];
+    [btnConnect setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [btnConnect setEnabled:NO];
+    [btnSend setEnabled:YES];
+    NSLog(@"did connect to host");
+    //UIAlertView *alertConnect = [[UIAlertView alloc] initWithTitle:@"Not Connected" message:@"Could not connect to Server App, Try Again" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    //[alertConnect show];
+}
+
+-(void)socket:(GCDAsyncSocket*) sock didWriteDataWithTag:(long)tag{
+    NSLog(@" did write data with tag %ld", tag);
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Data Sent" message:@"Barcode has been successfully sent" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    [alertView show];}
+
+-(void)socket:(GCDAsyncSocket*)sock didAcceptNewSocket:(GCDAsyncSocket *)newSocket{
+    NSLog(@"did accept new socket");
+}
+
+-(void)socket:(GCDAsyncSocket*)sock didWritePartialDataOfLength:(NSUInteger)partialLength tag:(long)tag{
+    NSLog(@"did write partial data of length");
+}
+
+-(void)socketDidDisconnect:(GCDAsyncSocket*)sock withError:(NSError *)err
+{
+    NSLog(@"socket did disconnect with %@", err);
+    UIAlertView *discoAlert = [[UIAlertView alloc]initWithTitle:@"Connection Error" message:@"Connection to the server failed" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [discoAlert show];
+}
+
+-(void)socketDidSecure:(GCDAsyncSocket*)sock{
+    NSLog(@"socket did secure");
+}
+
+- (IBAction)btnWrist:(id)sender {
+    // do something
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
 }
 
 @end
