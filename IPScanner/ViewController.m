@@ -21,6 +21,7 @@
     NSString *myString;
     NSString *ipAddress;
     NSMutableData *readData;
+    NSString *actionString;
 }
 uint16_t port = 5001;
 
@@ -59,27 +60,32 @@ uint16_t port = 5001;
     UIImage * imgScan = [UIImage imageNamed:@"button_active.png"];
     [btnScan setBackgroundImage:imgScan forState:UIControlStateNormal];
     [btnScan setTitle:@"Scan" forState:UIControlStateNormal];
+    [btnScan setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
     // Display Scan Computer Button
     UIImage *imgScanComputer = [UIImage imageNamed:@"button_active.png"];
     [btnScanComputer setBackgroundImage:imgScanComputer forState:UIControlStateNormal];
     [btnScanComputer setTitle:@"Scan Computer" forState:UIControlStateNormal];
+    [btnScanComputer setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
     // Display Connect
-    UIImage *imgConnect = [UIImage imageNamed:@"button_active.png"];
+    UIImage *imgConnect = [UIImage imageNamed:@"button_selected.png"];
     [btnConnect setBackgroundImage:imgConnect forState:UIControlStateNormal];
     [btnConnect setTitle:@"Connect to RST Scan" forState:UIControlStateNormal];
+    [btnConnect setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
     // Display btnSend
     UIImage *imgSend = [UIImage imageNamed:@"button_active.png"];
     [btnSend setBackgroundImage:imgSend forState:UIControlStateNormal];
     [btnSend setTitle:@"Send Data" forState:UIControlStateNormal];
+    [btnSend setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [btnSend setHidden:YES];
     
     // Display btnWrist
     UIImage *imgWrist = [UIImage imageNamed:@"button_active.png"];
     [btnWrist setBackgroundImage:imgWrist forState:UIControlStateNormal];
     [btnWrist setTitle:@"Wrist" forState:UIControlStateNormal];
-    
+    [btnWrist setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
     //Display UIsegmented control
     UISegmentedControl *control = [[UISegmentedControl alloc]initWithItems:arrayAction];
@@ -105,15 +111,18 @@ uint16_t port = 5001;
 {
     if (segment.selectedSegmentIndex == 0)
     {
-        txtReadData.text = [NSString stringWithFormat:@"%i", 0];
+        actionString = [NSString stringWithFormat:@"%i", 0];
+        //txtReadData.text = [NSString stringWithFormat:@"%i", 0];
     }
     else if (segment.selectedSegmentIndex == 1)
     {
-        txtReadData.text = [NSString stringWithFormat:@"%d", 1];
+        actionString = [NSString stringWithFormat:@"%i", 1];
+        //txtReadData.text = [NSString stringWithFormat:@"%d", 1];
     }
     else if (segment.selectedSegmentIndex == 2)
     {
-        txtReadData.text = [NSString stringWithFormat:@"%i", 2];
+        actionString = [NSString stringWithFormat:@"%i", 2];
+        //txtReadData.text = [NSString stringWithFormat:@"%i", 2];
     }
 }
 
@@ -277,9 +286,9 @@ uint16_t port = 5001;
 }
 
 - (IBAction)btnSend:(id)sender {
-    NSString *string = [[NSString alloc] initWithFormat:@"%@",str];
+    NSString *barcodeString = [[NSString alloc] initWithFormat:@"%@",str];
     //NSString *finalString = [string stringByAppendingString:ipAddress];
-    NSString *finalString = [NSString stringWithFormat:@"%@|%@", ipAddress, string];
+    NSString *finalString = [NSString stringWithFormat:@"%@|%@|%@", ipAddress, actionString, barcodeString];
     //NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
     //[asyncSocket writeData:data withTimeout:-1 tag:0];
     [asyncSocket writeData:[finalString dataUsingEncoding:NSUTF8StringEncoding] withTimeout:-1 tag:0];
@@ -287,10 +296,13 @@ uint16_t port = 5001;
 
 //GCDAsync Delegate method
 -(void)socket:(GCDAsyncSocket*)sock didConnectToHost:(NSString *)host port:(uint16_t)port{
+    UIImage *imgConnect = [UIImage imageNamed:@"button_active.png"];
+    [btnConnect setBackgroundImage:imgConnect forState:UIControlStateNormal];
     [btnConnect setTitle:@"Connected" forState:UIControlStateNormal];
     [btnConnect setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [btnConnect setEnabled:NO];
-    [btnSend setEnabled:YES];
+    //[btnSend setEnabled:YES];
+    [btnSend setHidden:NO];
     NSLog(@"did connect to host");
     //UIAlertView *alertConnect = [[UIAlertView alloc] initWithTitle:@"Not Connected" message:@"Could not connect to Server App, Try Again" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
     //[alertConnect show];
@@ -325,6 +337,11 @@ uint16_t port = 5001;
     NSLog(@"socket did disconnect with %@", err);
     UIAlertView *discoAlert = [[UIAlertView alloc]initWithTitle:@"Connection Error" message:@"Connection to the server failed" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [discoAlert show];
+    [btnSend setHidden:YES];
+    UIImage *imgConnect = [UIImage imageNamed:@"button_selected.png"];
+    [btnConnect setBackgroundImage:imgConnect forState:UIControlStateNormal];
+    [btnConnect setTitle:@"Connect to Server" forState:UIControlStateNormal];
+    [btnConnect setEnabled:YES];
 }
 
 -(void)socketDidSecure:(GCDAsyncSocket*)sock{
