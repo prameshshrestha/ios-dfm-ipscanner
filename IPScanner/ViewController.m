@@ -240,7 +240,8 @@ uint16_t port = 5001;
     else
     {
         [readData appendData:[GCDAsyncSocket CRLFData]];
-        [asyncSocket readDataToData:[GCDAsyncSocket CRLFData] withTimeout:-1 tag:0];
+        //[asyncSocket readDataToData:[GCDAsyncSocket CRLFData] withTimeout:-1 tag:0];
+        [asyncSocket readDataWithTimeout:-1 tag:0];
     }
 }
 
