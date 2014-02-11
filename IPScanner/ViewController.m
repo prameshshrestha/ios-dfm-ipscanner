@@ -20,10 +20,11 @@
     int rowNumber;
     NSString *myString;
     NSString *ipAddress;
+    NSMutableData *readData;
 }
 uint16_t port = 5001;
 
-@synthesize myTableView, btnScan, btnScanComputer, btnConnect, btnSend, btnWrist;
+@synthesize myTableView, btnScan, btnScanComputer, btnConnect, btnSend, btnWrist, txtReadData;
 
 - (void)viewDidLoad
 {
@@ -37,13 +38,11 @@ uint16_t port = 5001;
         NSLog(@"connected to WIFI");
     }
     else{
-        UIAlertView *wifiAlert = [[UIAlertView alloc] initWithTitle:@"Not Connected" message:@"Could not connect to Server App, Try Again" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        UIAlertView *wifiAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Device is not connected to WIFI" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [wifiAlert show];
     }
     
 	arrBarcode = [[NSMutableArray alloc]init];
-    
-    myString = @"prameshshrestha|1|10123564789";
     
     // Set Title Image
     self.navigationItem.titleView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dfm_slogo.png"]];
@@ -88,7 +87,6 @@ uint16_t port = 5001;
 }
 
 - (NSString *)getIPAddress {
-    
     NSString *address = @"error";
     struct ifaddrs *interfaces = NULL;
     struct ifaddrs *temp_addr = NULL;
@@ -104,11 +102,8 @@ uint16_t port = 5001;
                 if([[NSString stringWithUTF8String:temp_addr->ifa_name] isEqualToString:@"en0"]) {
                     // Get NSString from C String
                     address = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_addr)->sin_addr)];
-                    
                 }
-                
             }
-            
             temp_addr = temp_addr->ifa_next;
         }
     }
@@ -124,7 +119,6 @@ uint16_t port = 5001;
     NSString *ip = [defaults objectForKey:@"ip"];
     NSString *uniqueId = [defaults objectForKey:@"uniqueId"];
     bool isWristEnabled = [defaults boolForKey:@"isWristEnabled"];
-    
     if (!isWristEnabled){
         [btnWrist setHidden:YES];
     }
@@ -243,15 +237,20 @@ uint16_t port = 5001;
         [btnConnect setBackgroundImage:imgNotConnected forState:UIControlStateNormal];
         [btnConnect setTitle:@"Not Connected" forState:UIControlStateNormal];
     }
+    else
+    {
+        [readData appendData:[GCDAsyncSocket CRLFData]];
+        [asyncSocket readDataToData:[GCDAsyncSocket CRLFData] withTimeout:-1 tag:0];
+    }
 }
 
 - (IBAction)btnSend:(id)sender {
     NSString *string = [[NSString alloc] initWithFormat:@"%@",str];
+    //NSString *finalString = [string stringByAppendingString:ipAddress];
+    NSString *finalString = [NSString stringWithFormat:@"%@|%@", ipAddress, string];
     //NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
     //[asyncSocket writeData:data withTimeout:-1 tag:0];
-    [asyncSocket writeData:[myString dataUsingEncoding:NSUTF8StringEncoding] withTimeout:-1 tag:0];
-    //[asyncSocket readDataToData:[GCDAsyncSocket CRData] withTimeout:30.0 tag:0];
-    //[asyncSocket didWriteDataWithTag:(long)string];
+    [asyncSocket writeData:[finalString dataUsingEncoding:NSUTF8StringEncoding] withTimeout:-1 tag:0];
 }
 
 //GCDAsync Delegate method
@@ -265,10 +264,21 @@ uint16_t port = 5001;
     //[alertConnect show];
 }
 
+-(void)socket:(GCDAsyncSocket*)sock didReadData:(NSData *)data withTag:(long)tag{
+    //if data is read
+    //txtReadData.text = [NSString stringWithFormat:@"%@", data];
+    NSString *readString = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+    txtReadData.text = readString;
+    //always keep a read in the queue
+    [asyncSocket readDataWithTimeout:-1 tag:0];
+    NSLog(@"%@", readString);
+}
+
 -(void)socket:(GCDAsyncSocket*) sock didWriteDataWithTag:(long)tag{
     NSLog(@" did write data with tag %ld", tag);
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Data Sent" message:@"Barcode has been successfully sent" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-    [alertView show];}
+    [alertView show];
+}
 
 -(void)socket:(GCDAsyncSocket*)sock didAcceptNewSocket:(GCDAsyncSocket *)newSocket{
     NSLog(@"did accept new socket");
@@ -291,6 +301,11 @@ uint16_t port = 5001;
 
 - (IBAction)btnWrist:(id)sender {
     // do something
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [txtReadData resignFirstResponder];
+    return true;
 }
 
 - (void)didReceiveMemoryWarning

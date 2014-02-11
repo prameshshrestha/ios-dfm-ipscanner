@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "GCDAsyncSocket.h"
 
-@interface ViewController : UIViewController<UITableViewDelegate, UITableViewDataSource,ZBarReaderDelegate>{
+@interface ViewController : UIViewController<UITableViewDelegate, UITableViewDataSource,ZBarReaderDelegate, UITextFieldDelegate>{
     NSMutableArray *arrBarcode;
     GCDAsyncSocket *asyncSocket;
     NSString *host;
@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnConnect;
 @property (weak, nonatomic) IBOutlet UIButton *btnSend;
 @property (weak, nonatomic) IBOutlet UIButton *btnWrist;
+@property (weak, nonatomic) IBOutlet UITextField *txtReadData;
 @property (weak, nonatomic) IBOutlet UIButton *btnScan;
 - (IBAction)btnScan:(id)sender;
 
