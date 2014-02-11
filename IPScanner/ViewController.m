@@ -44,6 +44,9 @@ uint16_t port = 5001;
     
 	arrBarcode = [[NSMutableArray alloc]init];
     
+    // load array for uisegmented control
+    NSArray *arrayAction = [[NSArray alloc]initWithObjects:@"Registration",@"Send Ticket", @"Change Tracking",nil];
+    
     // Set Title Image
     self.navigationItem.titleView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"dfm_slogo.png"]];
     
@@ -76,6 +79,17 @@ uint16_t port = 5001;
     UIImage *imgWrist = [UIImage imageNamed:@"button_active.png"];
     [btnWrist setBackgroundImage:imgWrist forState:UIControlStateNormal];
     [btnWrist setTitle:@"Wrist" forState:UIControlStateNormal];
+    
+    
+    //Display UIsegmented control
+    UISegmentedControl *control = [[UISegmentedControl alloc]initWithItems:arrayAction];
+    control.frame = CGRectMake(3, 180, 312, 40);
+    UIColor *color = [UIColor colorWithRed:0/255.0f green:150/255.0f blue:225/255.0f alpha:1.0f];
+    //control.tintColor = [UIColor colorWithRed:0.3f green:0.3f blue:0.7f alpha:1.0f];
+    //[control setTintColor:color];
+    [[UISegmentedControl appearance]setTitleTextAttributes:@{NSForegroundColorAttributeName:color} forState:UIControlStateNormal];
+    [control addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:control];
 
     
     dispatch_queue_t mainQueue = dispatch_get_main_queue();
@@ -84,6 +98,23 @@ uint16_t port = 5001;
     //get ip address of the device
     ipAddress= [self getIPAddress];
     NSLog(@"%@", ipAddress);
+}
+
+
+- (void)valueChanged:(UISegmentedControl *)segment
+{
+    if (segment.selectedSegmentIndex == 0)
+    {
+        txtReadData.text = [NSString stringWithFormat:@"%i", 0];
+    }
+    else if (segment.selectedSegmentIndex == 1)
+    {
+        txtReadData.text = [NSString stringWithFormat:@"%d", 1];
+    }
+    else if (segment.selectedSegmentIndex == 2)
+    {
+        txtReadData.text = [NSString stringWithFormat:@"%i", 2];
+    }
 }
 
 - (NSString *)getIPAddress {
