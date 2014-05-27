@@ -15,7 +15,7 @@
 @implementation SettingsViewController{
     BOOL isWristEnabled;
 }
-@synthesize txtIP, btnSave, btnUdid, txtUniqueId;
+@synthesize txtIP, btnSave;//, btnUdid, txtUniqueId;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -41,16 +41,16 @@
     [btnSave setBackgroundImage:imgSave forState:UIControlStateNormal];
     [btnSave setTitle:@"Save" forState:UIControlStateNormal];
     // Display btnUdid
-    UIImage *imgUdid = [UIImage imageNamed:@"button_active.png"];
-    [btnUdid setBackgroundImage:imgUdid forState:UIControlStateNormal];
-    [btnUdid setTitle:@"Generate Unique ID" forState:UIControlStateNormal];
+    //UIImage *imgUdid = [UIImage imageNamed:@"button_active.png"];
+    //[btnUdid setBackgroundImage:imgUdid forState:UIControlStateNormal];
+    //[btnUdid setTitle:@"Generate Unique ID" forState:UIControlStateNormal];
     // nsuserdefaults
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *ip = [defaults objectForKey:@"ip"];
-    NSString *uniqueId = [defaults objectForKey:@"uniqueId"];
+    //NSString *uniqueId = [defaults objectForKey:@"uniqueId"];
     isWristEnabled = [defaults boolForKey:@"isWristEnabled"];
     txtIP.text = ip;
-    txtUniqueId.text = uniqueId;
+    //txtUniqueId.text = uniqueId;
     
     if (isWristEnabled){
         [yourSwitch setOn:YES animated:YES];
@@ -75,14 +75,14 @@
 
 - (IBAction)btnSave:(id)sender {
     [txtIP resignFirstResponder];
-    [txtUniqueId resignFirstResponder];
+    //[txtUniqueId resignFirstResponder];
     
     // Save data using NSUserDefault
     NSString *ip = [txtIP text];
-    NSString *uniqueId = [txtUniqueId text];
+    //NSString *uniqueId = [txtUniqueId text];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:ip forKey:@"ip"];
-    [defaults setObject:uniqueId forKey:@"uniqueId"];
+    //[defaults setObject:uniqueId forKey:@"uniqueId"];
     //[defaults setBool:isWristEnabled forKey:@"isWristEnabled"];
     [defaults setBool:isWristEnabled forKey:@"isWristEnabled"];
     [defaults synchronize];
@@ -91,19 +91,19 @@
     [saveAlert show];
 }
 
-- (IBAction)btnUdid:(id)sender {
+//- (IBAction)btnUdid:(id)sender {
     // create udid
-    CFUUIDRef uuidRef = CFUUIDCreate(NULL);
-    CFStringRef uuidStringRef = CFUUIDCreateString(NULL, uuidRef);
-    NSString *uuid = [NSString stringWithString:(__bridge NSString *)
-                      uuidStringRef];
-    txtUniqueId.text = uuid;
-}
+    //CFUUIDRef uuidRef = CFUUIDCreate(NULL);
+    //CFStringRef uuidStringRef = CFUUIDCreateString(NULL, uuidRef);
+    //NSString *uuid = [NSString stringWithString:(__bridge NSString *)
+      //                uuidStringRef];
+    //txtUniqueId.text = uuid;
+//}
 
 - (BOOL) textFieldShouldReturn:(UITextField *)textField
 {
     [txtIP resignFirstResponder];
-    [txtUniqueId resignFirstResponder];
+    //[txtUniqueId resignFirstResponder];
     return true;
 }
 

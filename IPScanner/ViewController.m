@@ -65,7 +65,7 @@ uint16_t port = 5001;
     // Display Scan Computer Button
     UIImage *imgScanComputer = [UIImage imageNamed:@"button_active.png"];
     [btnScanComputer setBackgroundImage:imgScanComputer forState:UIControlStateNormal];
-    [btnScanComputer setTitle:@"Scan Computer" forState:UIControlStateNormal];
+    [btnScanComputer setTitle:@"Read Data" forState:UIControlStateNormal];
     [btnScanComputer setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
     // Display Connect
@@ -242,12 +242,24 @@ uint16_t port = 5001;
 }
 
 - (IBAction)btnScanComputer:(id)sender {
+    /*
     ZBarReaderController *reeader = [ZBarReaderController new];
     reeader.readerDelegate = self;
     if ([ZBarReaderController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
         reeader.sourceType = UIImagePickerControllerSourceTypeCamera;
     [reeader.scanner setSymbology:ZBAR_I25 config:ZBAR_CFG_ENABLE to:0];
     [self presentViewController:reeader animated:YES completion:nil];
+     */
+    if ([asyncSocket isConnected]){
+        //[readData appendData:[GCDAsyncSocket CRLFData]];
+        //[asyncSocket readDataToData:[GCDAsyncSocket CRLFData] withTimeout:-1 tag:0];
+        [asyncSocket readDataWithTimeout:-1 tag:0];
+        NSLog(@"read button data read");
+    }
+    else{
+        UIAlertView *alertConnect = [[UIAlertView alloc]initWithTitle:@"Connection Error" message:@"Not connected to the server" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertConnect show];
+    }
 }
 
 - (void) imagePickerController:(UIImagePickerController *)reeader didFinishPickingMediaWithInfo:(NSDictionary *)info{
@@ -277,12 +289,12 @@ uint16_t port = 5001;
         [btnConnect setBackgroundImage:imgNotConnected forState:UIControlStateNormal];
         [btnConnect setTitle:@"Not Connected" forState:UIControlStateNormal];
     }
-    else
-    {
-        [readData appendData:[GCDAsyncSocket CRLFData]];
-        //[asyncSocket readDataToData:[GCDAsyncSocket CRLFData] withTimeout:-1 tag:0];
+    // check if connection is made
+    if ([asyncSocket isConnected]){
         [asyncSocket readDataWithTimeout:-1 tag:0];
+        NSLog(@"connect button data read");
     }
+     [asyncSocket readDataWithTimeout:-1 tag:0];
 }
 
 - (IBAction)btnSend:(id)sender {
@@ -315,6 +327,7 @@ uint16_t port = 5001;
     txtReadData.text = readString;
     //always keep a read in the queue
     [asyncSocket readDataWithTimeout:-1 tag:0];
+    NSLog(@"didReadData called");
     NSLog(@"%@", readString);
 }
 

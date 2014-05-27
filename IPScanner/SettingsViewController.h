@@ -10,12 +10,12 @@
 
 @interface SettingsViewController : UIViewController<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *txtIP;
-@property (weak, nonatomic) IBOutlet UIButton *btnUdid;
+//@property (weak, nonatomic) IBOutlet UIButton *btnUdid;
 @property (weak, nonatomic) IBOutlet UILabel *lblWrist;
-@property (weak, nonatomic) IBOutlet UITextField *txtUniqueId;
+//@property (weak, nonatomic) IBOutlet UITextField *txtUniqueId;
 @property (weak, nonatomic) IBOutlet UIButton *btnSave;
 - (IBAction)btnSave:(id)sender;
 
-- (IBAction)btnUdid:(id)sender;
+//- (IBAction)btnUdid:(id)sender;
 
 @end
